@@ -17,7 +17,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import { routes } from "../routes/routes";
 
 
-const list = () => (
+const ListItems = ({ setOpen }) => (
     <div
         className={clsx({
             width: '250',
@@ -26,8 +26,8 @@ const list = () => (
     >
         <List>
             {routes.map((text) => (
-                <ListItem button component={Link} to={text.path} key={text}>
-                    <ListItemIcon><text.icon/></ListItemIcon>
+                <ListItem button component={Link} to={text.path} key={text} onClick={() => setOpen(false)}>
+                    <ListItemIcon><text.icon /></ListItemIcon>
                     <ListItemText primary={text.alias} />
                 </ListItem>
             ))}
@@ -49,7 +49,7 @@ const AppBar = ({ currentVersion }) => {
                 </Typography>
             </Toolbar>
             <Drawer anchor='left' open={open} onClose={() => setOpen(false)}>
-                {list()}
+                <ListItems setOpen={setOpen} />
             </Drawer>
         </AppBarMui>
     )
