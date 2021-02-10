@@ -22,7 +22,6 @@ export default function App() {
             }}
           />
         ))}
-        <Route path="*" exact render={() => <>Not Found</>}></Route>
       </Switch>
     </>
   );
