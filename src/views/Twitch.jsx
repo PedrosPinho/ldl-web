@@ -15,7 +15,7 @@ const Twitch = () => {
                     onVideoReady={() => setLoading(false)}
                     channel="senhorcabeca"
                     width="100%"
-                    height="90.5vh"
+                    height="91vh"
                     theme="dark"
                 />
             </div>

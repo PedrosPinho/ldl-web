@@ -6,7 +6,7 @@ export const Context = createContext();
 
 export const Authenticator = ({ children }) => {
   const [currentVersion, setCurrentVersion] = useState("2021.1");
-  const [loading, setLoading] = useState(!true);
+  const [loading] = useState(!true);
 
   return loading ? (
     <Spinner/>

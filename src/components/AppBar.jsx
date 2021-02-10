@@ -11,7 +11,8 @@ import {
     List,
     ListItem,
     ListItemText,
-    ListItemIcon
+    ListItemIcon,
+    Divider
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import { routes } from "../routes/routes";
@@ -24,7 +25,10 @@ const ListItems = ({ setOpen }) => (
         })}
         role="presentation"
     >
-        <List>
+        <div style={{height: '9vh'}}>
+        </div>
+        <Divider />
+        <List >
             {routes.map((text) => (
                 <ListItem button component={Link} to={text.path} key={text} onClick={() => setOpen(false)}>
                     <ListItemIcon><text.icon /></ListItemIcon>
@@ -39,7 +43,7 @@ const AppBar = ({ currentVersion }) => {
     const [open, setOpen] = useState(false);
 
     return (
-        <AppBarMui position="static">
+        <AppBarMui position="sticky" style={{height: '9vh'}}>
             <Toolbar>
                 <IconButton edge="start" color="inherit" aria-label="menu" onClick={() => setOpen(true)}>
                     <MenuIcon />
