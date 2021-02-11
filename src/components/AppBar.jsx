@@ -49,7 +49,7 @@ const AppBar = ({ currentVersion }) => {
                     <MenuIcon />
                 </IconButton>
                 <Typography noWrap variant="h6" >
-                    Liga Descalvadense de LoL - versão {currentVersion}
+                    Liga Descalvadense de LoL - Split {currentVersion}
                 </Typography>
             </Toolbar>
             <Drawer anchor='left' open={open} onClose={() => setOpen(false)}>
