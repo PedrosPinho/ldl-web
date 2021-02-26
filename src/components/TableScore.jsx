@@ -1,23 +1,24 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { Fdb } from "../config/firebase";
 import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody } from '@material-ui/core';
 
-function createData(name, pts) {
-    return { name, pts };
-}
+const TableScore = ({ classes, currentVersion }) => {
+    const [rows, setRows] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-const rows = [
-    createData('Descalboys e Lavakigor', 2),
-    createData('Descalboys e Lavakigor', 2),
-    createData('Descalboys e Lavakigor', 2),
-    createData('Descalboys e Lavakigor', 2),
-    createData('Descalboys e Lavakigor', 2),
-    createData('Descalboys e Lavakigor', 2),
-    createData('Descalboys e Lavakigor', 2),
-    createData('Descalboys e Lavakigor', 2),
-    createData('Descalboys e Lavakigor', 2)
-];
+    useEffect(() => {
+        if (currentVersion) {
+            Fdb.ref(`/versions/${currentVersion}/teams`).once('value').then((snapshot) => {
+                const teams = Object.values(snapshot.val());
+                let tempRows = teams.map(t => { return { name: t.name, points: t.points } });
+                setRows(tempRows.sort((a, b) => {
+                    return b.points - a.points;
+                }));
+                setLoading(false);
+            });
+        }
+    }, [currentVersion]);
 
-const TableScore = ({ classes }) => {
     return <TableContainer className={classes.table} component={Paper}>
         <Table size="small" aria-label="tabela de pontos" stickyHeader>
             <TableHead>
@@ -27,12 +28,12 @@ const TableScore = ({ classes }) => {
                 </TableRow>
             </TableHead>
             <TableBody>
-                {rows.map((row) => (
+                {loading ? 'Carregando informações...' : rows.map((row) => (
                     <TableRow key={Math.random()}>
                         <TableCell component="th" scope="row">
                             {row.name}
                         </TableCell>
-                        <TableCell align="left">{row.pts}</TableCell>
+                        <TableCell align="left">{row.points}</TableCell>
                     </TableRow>
                 ))}
             </TableBody>

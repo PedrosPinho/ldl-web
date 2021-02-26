@@ -1,36 +1,36 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { Fdb } from "../config/firebase";
 import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody } from '@material-ui/core';
 
-function createData(date, name1, name2, winner) {
-    return { date, name1, name2, winner };
-}
+const TableHistory = ({ classes, currentVersion }) => {
+    const [rows, setRows] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-const rows = [
-    createData('06-02-2021', 'Descalboys e Lavakigor', 'Time 2', 'Descalboys e Lavakigor'),
-    createData('06-02-2021', 'Descalboys e Lavakigor', 'Time 2', 'Descalboys e Lavakigor'),
-    createData('06-02-2021', 'Descalboys e Lavakigor', 'Time 2', 'Descalboys e Lavakigor'),
-    createData('06-02-2021', 'Descalboys e Lavakigor', 'Time 2', 'Descalboys e Lavakigor'),
-    createData('06-02-2021', 'Descalboys e Lavakigor', 'Time 2', 'Descalboys e Lavakigor'),
-    createData('06-02-2021', 'Descalboys e Lavakigor', 'Time 2', 'Descalboys e Lavakigor'),
-    createData('06-02-2021', 'Descalboys e Lavakigor', 'Time 2', 'Descalboys e Lavakigor'),
-    createData('06-02-2021', 'Descalboys e Lavakigor', 'Time 2', 'Descalboys e Lavakigor'),
-    createData('06-02-2021', 'Descalboys e Lavakigor', 'Time 2', 'Descalboys e Lavakigor'),
-    createData('06-02-2021', 'Descalboys e Lavakigor', 'Time 2', 'Descalboys e Lavakigor'),
-    createData('06-02-2021', 'Descalboys e Lavakigor', 'Time 2', 'Descalboys e Lavakigor'),
-    createData('06-02-2021', 'Descalboys e Lavakigor', 'Time 2', 'Descalboys e Lavakigor'),
-    createData('06-02-2021', 'Descalboys e Lavakigor', 'Time 2', 'Descalboys e Lavakigor'),
-    createData('06-02-2021', 'Descalboys e Lavakigor', 'Time 2', 'Descalboys e Lavakigor'),
-    createData('06-02-2021', 'Descalboys e Lavakigor', 'Time 2', 'Descalboys e Lavakigor'),
-    createData('06-02-2021', 'Descalboys e Lavakigor', 'Time 2', 'Descalboys e Lavakigor'),
-    createData('06-02-2021', 'Descalboys e Lavakigor', 'Time 2', 'Descalboys e Lavakigor'),
-];
+    useEffect(() => {
+        if (currentVersion) {
+            Fdb.ref(`/versions/${currentVersion}/matches`).once('value').then((snapshot) => {
+                const matches = Object.values(snapshot.val());
+                let tempRows = matches.map(t => {
+                    return {
+                        name1: t?.blue?.name,
+                        name2: t?.red?.name,
+                        winner: t?.winner,
+                        round: t?.round,
+                    }
+                });
+                setRows(tempRows.sort((a, b) => {
+                    return a.round - b.round;
+                }));
+                setLoading(false);
+            });
+        }
+    }, [currentVersion]);
 
-const TableHistory = ({ classes }) => {
     return <TableContainer className={classes.table} component={Paper}>
         <Table size="small" aria-label="tabela de pontos" stickyHeader>
             <TableHead>
                 <TableRow>
-                    <TableCell align="left"><b>Data</b></TableCell>
+                    <TableCell align="left"><b>Rodada</b></TableCell>
                     <TableCell align="left"><b>Time Blue Side</b></TableCell>
                     <TableCell align="left"><b>Time Red Side</b></TableCell>
                     <TableCell align="left"><b>Vencedor</b></TableCell>
@@ -40,7 +40,7 @@ const TableHistory = ({ classes }) => {
                 {rows.map((row) => (
                     <TableRow key={Math.random()}>
                         <TableCell component="th" scope="row">
-                            {row.date}
+                            {row.round}
                         </TableCell>
                         <TableCell align="left">{row.name1}</TableCell>
                         <TableCell align="left">{row.name2}</TableCell>

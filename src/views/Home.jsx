@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext }  from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useTheme } from '@material-ui/styles';
 import { Grid, useMediaQuery } from '@material-ui/core';
@@ -7,10 +7,14 @@ import MiniTwitch from '../components/MiniTwitch';
 import TableScore from '../components/TableScore';
 import TableHistory from '../components/TableHistory';
 
+import { Context } from "../context/Authenticator";
+
 import hitory from '../routes/history';
 import Banner from '../static/banner.jpg';
 
 const Home = () => {
+  const { currentVersion } = useContext(Context);
+
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('xs'), {
         defaultMatches: true
@@ -56,10 +60,10 @@ const Home = () => {
                     <MiniTwitch classes={classes} />
                 </Grid>
                 <Grid item xs={12} sm={8}>
-                    <TableHistory classes={classes} />
+                    <TableHistory classes={classes} currentVersion={currentVersion} />
                 </Grid>
                 <Grid item xs={12} sm={4}>
-                    <TableScore classes={classes} />
+                    <TableScore classes={classes} currentVersion={currentVersion} />
                 </Grid>
             </Grid>
         </div>

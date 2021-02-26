@@ -1,8 +1,8 @@
 /* eslint-disable no-debugger, no-console*/
 import firebase from "firebase/app";
 import "firebase/analytics";
+import "firebase/database";
 // import "firebase/auth";
-// import "firebase/firestore";
 
 
 // Firebase configuration
@@ -18,5 +18,5 @@ firebase.initializeApp({
 
 // // Exporting Firebase instances
 // export const FA = firebase.auth();
-// export const FFS = firebase.firestore(); 
+export const Fdb = firebase.database(); 
 export const FAnalytics = firebase.analytics();
